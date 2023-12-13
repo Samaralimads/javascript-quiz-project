@@ -33,26 +33,50 @@ class Quiz {
     // Good answer
     console.log(answer);
     console.log(this.questions[this.currentQuestionIndex].answer);
-    
+
     if (answer === this.questions[this.currentQuestionIndex].answer) {
       this.correctAnswers++;
     }
     // Bad answer ==> nothing happens
   }
-  
-    hasEnded(){
-        if (this.currentQuestionIndex < this.questions.length) return false
-        if (this.currentQuestionIndex >= this.questions.length) return true
+
+  hasEnded() {
+    if (this.currentQuestionIndex < this.questions.length) return false;
+    if (this.currentQuestionIndex >= this.questions.length) return true;
+  }
+
+  filterQuestionsByDifficulty(difficulty) {
+    if (typeof difficulty === "number" && difficulty >= 1 && difficulty <= 3) {
+      this.questions = this.questions.filter(
+        (question) => question.difficulty === difficulty
+      );
+    } else {
     }
+  }
+
+  averageDifficulty() {
+    const sumDifficulty = this.questions.reduce(
+      (total, question) => total + question.difficulty,
+      0
+    );
+    const average = sumDifficulty / this.questions.length;
+
+    return average;
+  }
 }
 
-
-
 const testQuestions = [
-    { text: "Question 1", choices: ["a", "b", "c"], answer: "a" },
-    { text: "Question 2", choices: ["d", "e", "f"], answer: "e" },
-    { text: "Question 3", choices: ["x", "y", "z"], answer: "z" },
-  ];
+  { text: "Question 1", choices: ["a", "b", "c"], answer: "a", difficulty: 1 },
+  { text: "Question 2", choices: ["d", "e", "f"], answer: "e", difficulty: 2 },
+  { text: "Question 3", choices: ["x", "y", "z"], answer: "z", difficulty: 2 },
+  { text: "Question 4", choices: ["w", "x", "y"], answer: "w", difficulty: 3 },
+];
 
-const quiz1 = new Quiz(testQuestions, 60, 60)
-quiz1.checkAnswer("a")
+const quiz1 = new Quiz(testQuestions, 60, 60);
+quiz1.checkAnswer("a");
+
+quiz1.filterQuestionsByDifficulty(2);
+console.log(quiz1.questions);
+
+const average = quiz1.averageDifficulty();
+console.log(average);
